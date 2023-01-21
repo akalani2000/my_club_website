@@ -1,0 +1,41 @@
+{% extends 'events/base.html' %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+
+    <h1>Event:</h1>
+    <br><br>
+    <div class="card">
+  <div class="card-header">
+    <b>{{ event }}</b>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Venue: {{ event.venue }} </h5>
+    <p class="card-text">
+        <ul>
+                <li>Date: {{ event.event_date }}</li>
+        {% if is_past == 'In Future' or is_past == 'Running' %}
+                <li>Days Till Event: {{ event.days_till }}</li>
+        {% endif %}
+              <li>Event Status: {{ event.is_past }}</li>
+              <li>Venue website: {{ event.venue.web }}</li>
+              <li>Manager: {{ event.manager }}</li>
+              <li>Description: {{ event.description }}</li>
+              <li>Approved: {{ event.approved }}</li>
+              {%for user in event.attendees.all %}
+                <li>Attendees: {{ user }}</li>
+                {% endfor %}
+        </ul>
+      </p>
+
+  </div>
+</div>
+
+{% endblock %}
+</body>
+</html>

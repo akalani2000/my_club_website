@@ -1,0 +1,35 @@
+{% extends 'events/base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+{% if user.is_authenticated %}
+    {% if user == event.manager %}
+        <h1>Update Event... </h1>
+        <br><br>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <br>
+              <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+    {% else %}
+        <h1>Sorry! you are not the manager of this event.</h1>
+            Logged In User: {{ user }}
+            <br>
+            Event Manager: {{ event.manager }}
+            <br><br>
+    {% endif %}
+{% else %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                Sorry! You are not logged in yet, You can't access this page.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <a class="btn btn-primary" href="{% url 'login-user' %}">Login</a>
+    {% endif %}
+{% endblock %}
+</body>
+</html>

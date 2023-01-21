@@ -1,0 +1,58 @@
+{% extends 'events/base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+
+<center>
+<h1>Hello {{ user }} {{ month }}{{ year }}</h1>
+    {{ time }} {{ now }} {{current_year}}
+    <br><br>
+    {{ cal|safe }}
+    <br><br>
+    </center>
+    {% if event_list %}
+    <h2>Event for this month</h2>
+        {% for event in event_list %}
+            <div class="card">
+              <div class="card-header">
+                <b>{{ event }}</b>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Venue: {{ event.venue }}</h5>
+                <p class="card-text">
+                  <ul>
+                  <li>Date: {{ event.event_date }}</li>
+                <li>Venue website: {{ event.venue.web }}</li>
+                <li>Manager: {{ event.manager }}</li>
+                <li>Description: {{ event.description }}</li>
+                {%for user in event.attendees.all %}
+                <li>Attendees: {{ user }}</li>
+                {% endfor %}
+                </ul>
+                  </p>
+              </div>
+              {% if user.is_authenticated %}
+                {% if user == event.manager %}
+                  <div class="card-footer text-muted">
+                    <a href="{% url 'update-events' event.id %}" class="btn btn-outline-secondary">Update</a>
+                    <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger">Delete</a>
+                  </div>
+                {% endif %}
+              {% endif %}
+            </div>
+            <br>
+        {% endfor %}
+    {% else %}
+        <h3>No events for this month</h3>
+    {% endif %}
+<center>
+    <br><br>
+    Copyright (c) {{current_year}}
+</center>
+{% endblock %}
+</body>
+</html>

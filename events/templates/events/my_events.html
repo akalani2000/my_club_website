@@ -1,0 +1,47 @@
+{% extends 'events/base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+<h1>Events</h1>
+<br><br>
+<a href="{% url 'event-text' %}" class="btn btn-outline-info">Download Text</a>
+<a href="{% url 'event-csv' %}" class="btn btn-outline-success">Download CSV</a>
+<a href="{% url 'event-pdf' %}" class="btn btn-outline-danger">Download PDF</a>
+<br><br>
+{%for event in events %}
+<div class="card">
+  <div class="card-header">
+    <b>{{ event }}</b>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Venue: {{ event.venue }}</h5>
+    <p class="card-text">
+      <ul>
+      <li>Date: {{ event.event_date }}</li>
+    <li>Venue website: {{ event.venue.web }}</li>
+    <li>Manager: {{ event.manager }}</li>
+    <li>Description: {{ event.description }}</li>
+    {%for user in event.attendees.all %}
+    <li>Attendees: {{ user }}</li>
+    {% endfor %}
+    </ul>
+      </p>
+  </div>
+  {% if user.is_authenticated %}
+    {% if user == event.manager %}
+      <div class="card-footer text-muted">
+        <a href="{% url 'update-events' event.id %}" class="btn btn-outline-secondary">Update</a>
+        <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger">Delete</a>
+      </div>
+    {% endif %}
+  {% endif %}
+</div>
+<br>
+{% endfor %}
+{% endblock %}
+</body>
+</html>
